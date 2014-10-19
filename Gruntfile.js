@@ -97,4 +97,19 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadTasks("inc/tasks");
+
+
+
+  grunt.registerTask('dotest', function(){
+
+    var done = this.async();
+
+    console.log('dotest');
+
+    var t = require('./dotest.js');
+    t.dotest(done);
+
+  });
+
+
 };
