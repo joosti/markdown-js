@@ -5,7 +5,7 @@
  * Copyright (c) 2009-2010 Ash Berlin
  * Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com> (http://www.christophdorn.com)
  * Version: 0.6.0-beta1
- * Date: 2014-10-19T21:12Z
+ * Date: 2014-10-19T23:05Z
  */
 
 (function(expose) {
@@ -1811,7 +1811,23 @@
       if (args.spaceBoundary && (!last.match(/\s$/))) { return true; }
     }
 
+/*
+  Ti.inline[ "$" ] = function inline_meta( text, matches, out ) {
+    console.log('matches start');
+    //if (invalidBoundary(args, prev)) { return; }
+
+      args.matcher.lastIndex = 0;
+      var m = args.matcher.exec(text);
+      if (m) {
+        var result = args.emitter.call(this, m);
+        if (result) {
+          return [m[0].length, result];
+        }
+      }   
+  };
+*/
   Ti.registerInline = function(start, fn) { this.inline[start] = fn; };
+
   Ti.inlineRegexp = function(args) {
     this.registerInline(args.start, function(text, match, prev) {
       if (invalidBoundary(args, prev)) { return; }
@@ -1826,10 +1842,21 @@
     });
   };
 
+  Ti.inlineRegexp({
+    start: '$',
+    matcher: /(\$)([\S\s]+)(\$)/,
+    emitter: function(matches) { return matches[0]; }
+  });
+  Ti.inlineRegexp({
+    start: '\\begin',
+    matcher: /(\\begin{[\S\s]+})([\S\s]*)(\\end{[\S\s]+})/,
+    emitter: function(matches) { return matches[0]; }
+  });
+  
   Markdown.dialects.Ti = Ti;
-//  Markdown.dialects.Ti.inline.__escape__ = /^\\[\\`\*_{}\[\]()#\+.!\-|:]/;
-//  Ti.buildBlockOrder ( Markdown.dialects.Maruku.block );
-//  Ti.buildInlinePatterns( Markdown.dialects.Maruku.inline );
+  Markdown.dialects.Ti.inline.__escape__ = /^\\[\\`\*_{}\[\]()#\+.!\-|:]/;
+  Markdown.buildBlockOrder ( Markdown.dialects.Ti.block );
+  Markdown.buildInlinePatterns( Markdown.dialects.Ti.inline );
 
 // Include all our dependencies and return the resulting library.
 

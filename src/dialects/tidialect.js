@@ -15,6 +15,7 @@ define(['../markdown_helpers', './dialect_helpers', './maruku', '../parser'], fu
     }
 
   Ti.registerInline = function(start, fn) { this.inline[start] = fn; };
+
   Ti.inlineRegexp = function(args) {
     this.registerInline(args.start, function(text, match, prev) {
       if (invalidBoundary(args, prev)) { return; }
@@ -29,10 +30,21 @@ define(['../markdown_helpers', './dialect_helpers', './maruku', '../parser'], fu
     });
   };
 
+  Ti.inlineRegexp({
+    start: '$',
+    matcher: /(\$)([\S\s]+)(\$)/,
+    emitter: function(matches) { return matches[0]; }
+  });
+  Ti.inlineRegexp({
+    start: '\\begin',
+    matcher: /(\\begin{[\S\s]+})([\S\s]*)(\\end{[\S\s]+})/,
+    emitter: function(matches) { return matches[0]; }
+  });
+
   Markdown.dialects.Ti = Ti;
-//  Markdown.dialects.Ti.inline.__escape__ = /^\\[\\`\*_{}\[\]()#\+.!\-|:]/;
-//  Ti.buildBlockOrder ( Markdown.dialects.Maruku.block );
-//  Ti.buildInlinePatterns( Markdown.dialects.Maruku.inline );
+  Markdown.dialects.Ti.inline.__escape__ = /^\\[\\`\*_{}\[\]()#\+.!\-|:]/;
+  Markdown.buildBlockOrder ( Markdown.dialects.Ti.block );
+  Markdown.buildInlinePatterns( Markdown.dialects.Ti.inline );
 
   return Ti;
 });
