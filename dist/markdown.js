@@ -5,7 +5,7 @@
  * Copyright (c) 2009-2010 Ash Berlin
  * Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com> (http://www.christophdorn.com)
  * Version: 0.6.0-beta1
- * Date: 2014-10-27T14:19Z
+ * Date: 2014-10-27T15:03Z
  */
 
 (function(expose) {
@@ -1845,7 +1845,8 @@
       // m[0]: @gist:idhere@, m[1] : @gist, m[2]: id, @
       //console.log('--match array', m, '----');
       var attrs = { 'data-gist-id': m[2]};
-      var retVal =   ["code", attrs] ;
+      var msg = "Github gist @" + m[2];
+      var retVal =   ["code", attrs, msg] ;
       //console.log('retVal', retVal);
       return retVal;
     }

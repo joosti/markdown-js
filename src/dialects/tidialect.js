@@ -48,7 +48,8 @@ define(['../markdown_helpers', './dialect_helpers', './maruku', '../parser'], fu
       // m[0]: @gist:idhere@, m[1] : @gist, m[2]: id, @
       //console.log('--match array', m, '----');
       var attrs = { 'data-gist-id': m[2]};
-      var retVal =   ["code", attrs] ;
+      var msg = "Github gist @" + m[2];
+      var retVal =   ["code", attrs, msg] ;
       //console.log('retVal', retVal);
       return retVal;
     }
