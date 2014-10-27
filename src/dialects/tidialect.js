@@ -41,6 +41,19 @@ define(['../markdown_helpers', './dialect_helpers', './maruku', '../parser'], fu
     emitter: function(matches) { return matches[0]; }
   });
 
+  Ti.inlineRegexp({
+    start: '@gist',
+    matcher: /(@gist:)([\S\s]*)(@)/,
+    emitter: function(m) {
+      // m[0]: @gist:idhere@, m[1] : @gist, m[2]: id, @
+      //console.log('--match array', m, '----');
+      var attrs = { 'data-gist-id': m[2]};
+      var retVal =   ["code", attrs] ;
+      //console.log('retVal', retVal);
+      return retVal;
+    }
+  });
+
   Markdown.dialects.Ti = Ti;
   Markdown.dialects.Ti.inline.__escape__ = /^\\[\\`\*_{}\[\]()#\+.!\-|:]/;
   Markdown.buildBlockOrder ( Markdown.dialects.Ti.block );

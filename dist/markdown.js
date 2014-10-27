@@ -5,7 +5,7 @@
  * Copyright (c) 2009-2010 Ash Berlin
  * Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com> (http://www.christophdorn.com)
  * Version: 0.6.0-beta1
- * Date: 2014-10-19T23:05Z
+ * Date: 2014-10-27T14:19Z
  */
 
 (function(expose) {
@@ -1811,21 +1811,6 @@
       if (args.spaceBoundary && (!last.match(/\s$/))) { return true; }
     }
 
-/*
-  Ti.inline[ "$" ] = function inline_meta( text, matches, out ) {
-    console.log('matches start');
-    //if (invalidBoundary(args, prev)) { return; }
-
-      args.matcher.lastIndex = 0;
-      var m = args.matcher.exec(text);
-      if (m) {
-        var result = args.emitter.call(this, m);
-        if (result) {
-          return [m[0].length, result];
-        }
-      }   
-  };
-*/
   Ti.registerInline = function(start, fn) { this.inline[start] = fn; };
 
   Ti.inlineRegexp = function(args) {
@@ -1852,7 +1837,20 @@
     matcher: /(\\begin{[\S\s]+})([\S\s]*)(\\end{[\S\s]+})/,
     emitter: function(matches) { return matches[0]; }
   });
-  
+
+  Ti.inlineRegexp({
+    start: '@gist',
+    matcher: /(@gist:)([\S\s]*)(@)/,
+    emitter: function(m) {
+      // m[0]: @gist:idhere@, m[1] : @gist, m[2]: id, @
+      //console.log('--match array', m, '----');
+      var attrs = { 'data-gist-id': m[2]};
+      var retVal =   ["code", attrs] ;
+      //console.log('retVal', retVal);
+      return retVal;
+    }
+  });
+
   Markdown.dialects.Ti = Ti;
   Markdown.dialects.Ti.inline.__escape__ = /^\\[\\`\*_{}\[\]()#\+.!\-|:]/;
   Markdown.buildBlockOrder ( Markdown.dialects.Ti.block );

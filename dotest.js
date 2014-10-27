@@ -22,8 +22,9 @@ exports.dotest = function(done){
 	});
 */
     var text = "[Markdown] is a simple text-based [markup language]\n" +
-           "$ donot * touch * this $ created by [John Gruber]\n\n" +
-           "adfdsf X  \\begin{aaaa}  * adfs * asdf $   \\end{aaaa} adfdaf [John Gruber]:    http://daringfireball.net";
+           "$ donot * touch * this <tag /> $ created by [John Gruber]\n\n" +
+           "adfdsf X  \\begin{aaaa}  * adfs * asdf $   \\end{aaaa} adfdaf \n\n"+
+           "some code stuff @gist:idhere@ ... `tag using quotes` "; 
 
     console.log( md.toHTML( text , "Ti" ) );
 
