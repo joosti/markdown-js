@@ -24,6 +24,10 @@ exports.dotest = function(done){
     var text = "[Markdown] is a simple text-based [markup language]\n" +
            "$ donot * touch * this <tag /> $ created by [John Gruber]\n\n" +
            "adfdsf X  \\begin{aaaa}  * adfs * asdf $   \\end{aaaa} adfdaf \n\n"+
+           " an iframe here @iframe:www.google.com@ ... "+
+           "incorrect iframe: @iframe:www.google.com|100%|350|extra@" +
+           "another incorrect iframe: @iframe:www.google.com|100%@" +
+           " another iframe here @iframe:www.google.com|100%|350@ ... "+
            "some code stuff @gist:idhere@ ... `tag using quotes` "; 
 
     console.log( md.toHTML( text , "Ti" ) );

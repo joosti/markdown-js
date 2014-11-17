@@ -5,7 +5,7 @@
  * Copyright (c) 2009-2010 Ash Berlin
  * Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com> (http://www.christophdorn.com)
  * Version: 0.6.0-beta1
- * Date: 2014-10-27T15:03Z
+ * Date: 2014-11-17T14:42Z
  */
 
 (function(expose) {
@@ -1840,13 +1840,44 @@
 
   Ti.inlineRegexp({
     start: '@gist',
-    matcher: /(@gist:)([\S\s]*)(@)/,
+    matcher: /(@gist:)([\S\s]*?)(@)/,
     emitter: function(m) {
       // m[0]: @gist:idhere@, m[1] : @gist, m[2]: id, @
       //console.log('--match array', m, '----');
       var attrs = { 'data-gist-id': m[2]};
       var msg = "Github gist @" + m[2];
       var retVal =   ["code", attrs, msg] ;
+      //console.log('retVal', retVal);
+      return retVal;
+    }
+  });
+
+  Ti.inlineRegexp({
+    start: '@iframe',
+    matcher: /(@iframe:)([\S\s]*?)(@)/,  // '?' makes it lazy instead of greedy
+    emitter: function(m) {
+      // m[0]: @iframe:idhere@, m[1] : @iframe, m[2]: id, @
+      //console.log('--iframe match array', m, '----');
+      var attrs;
+      var retVal;
+      // m2 may hold src or src|width|height
+      var params = m[2].split("|");
+      if (params.length === 1){
+        attrs = { 'src': m[2], frameborder: "0", width:"100%", allowfullscreen: "1"};
+        retVal = ["iframe", attrs, ""] ;
+      } else if (params.length === 3){
+        var src = params[0];
+        var width = params[1];
+        var height = params[2];
+        attrs = { 'src': src, frameborder: "0", width:width, height: height, allowfullscreen: "1"};
+        retVal = ["iframe", attrs, ""] ;
+      } else {
+        retVal = ["code", {}, "iframe requires 1 param (src) or 3 params (src|width|height), passed " + params.length + " arguments"];
+      }
+
+//      var attrs = { 'src': m[2], frameborder: 0, width:"100%", allowfullscreen: true};
+
+  //    var retVal =   ["iframe", attrs, ""] ;
       //console.log('retVal', retVal);
       return retVal;
     }
