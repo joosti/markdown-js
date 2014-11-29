@@ -41,6 +41,7 @@ define(['../markdown_helpers', './dialect_helpers', './maruku', '../parser'], fu
     emitter: function(matches) { return matches[0]; }
   });
 
+/*
   Ti.inlineRegexp({
     start: '@gist',
     matcher: /(@gist:)([\S\s]*?)(@)/,
@@ -50,6 +51,20 @@ define(['../markdown_helpers', './dialect_helpers', './maruku', '../parser'], fu
       var attrs = { 'data-gist-id': m[2]};
       var msg = "Github gist @" + m[2];
       var retVal =   ["code", attrs, msg] ;
+      //console.log('retVal', retVal);
+      return retVal;
+    }
+  });
+*/
+  Ti.inlineRegexp({
+    start: '@gist',
+    matcher: /(@gist:)([\S\s]*?)(@)/,
+    emitter: function(m) {
+      // m[0]: @gist:idhere@, m[1] : @gist, m[2]: id, @
+      //console.log('--match array', m, '----');
+      var attrs = { 'id': m[2]};
+      var msg = "Github gist @" + m[2];
+      var retVal =   ["gist", attrs, msg] ;
       //console.log('retVal', retVal);
       return retVal;
     }

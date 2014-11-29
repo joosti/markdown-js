@@ -5,7 +5,7 @@
  * Copyright (c) 2009-2010 Ash Berlin
  * Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com> (http://www.christophdorn.com)
  * Version: 0.6.0-beta1
- * Date: 2014-11-17T14:42Z
+ * Date: 2014-11-29T20:50Z
  */
 
 (function(expose) {
@@ -1838,6 +1838,7 @@
     emitter: function(matches) { return matches[0]; }
   });
 
+/*
   Ti.inlineRegexp({
     start: '@gist',
     matcher: /(@gist:)([\S\s]*?)(@)/,
@@ -1847,6 +1848,20 @@
       var attrs = { 'data-gist-id': m[2]};
       var msg = "Github gist @" + m[2];
       var retVal =   ["code", attrs, msg] ;
+      //console.log('retVal', retVal);
+      return retVal;
+    }
+  });
+*/
+  Ti.inlineRegexp({
+    start: '@gist',
+    matcher: /(@gist:)([\S\s]*?)(@)/,
+    emitter: function(m) {
+      // m[0]: @gist:idhere@, m[1] : @gist, m[2]: id, @
+      //console.log('--match array', m, '----');
+      var attrs = { 'id': m[2]};
+      var msg = "Github gist @" + m[2];
+      var retVal =   ["gist", attrs, msg] ;
       //console.log('retVal', retVal);
       return retVal;
     }
